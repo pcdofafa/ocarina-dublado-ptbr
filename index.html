@@ -92,6 +92,9 @@ strong{color:var(--text);font-weight:600}
 .video-box .play svg{width:30px;height:30px;margin-left:4px}
 .video-box .cap{font-family:'Cinzel',serif;text-transform:uppercase;letter-spacing:.12em;font-size:13px;color:var(--gold-lt)}
 .video-box .cap small{display:block;font-family:'Inter',sans-serif;text-transform:none;letter-spacing:0;color:var(--muted);font-size:12.5px;margin-top:4px}
+#ytplayer,#ytplayer iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-box .ph{transition:opacity .45s ease}
+.video-box .ph.hide{opacity:0;pointer-events:none}
 
 /* download */
 .dlbox{background:linear-gradient(135deg,rgba(185,132,31,.16),rgba(95,174,90,.12));border:1px solid rgba(232,181,58,.32);border-radius:20px;padding:34px 30px;text-align:center;box-shadow:var(--shadow)}
@@ -102,6 +105,10 @@ strong{color:var(--text);font-weight:600}
 .espelho svg{width:20px;height:20px;flex:none;color:var(--gold-lt)}
 .espelho .nm{font-family:'Cinzel',serif;font-weight:600;color:var(--text);font-size:15px;letter-spacing:.02em}
 .espelho .nt{font-size:13px;color:var(--muted);margin-left:auto}
+a.espelho{text-decoration:none;cursor:pointer;transition:.15s}
+a.espelho:hover{border-color:var(--gold);background:var(--surface3);transform:translateY(-1px);text-decoration:none}
+.espelho-sha{display:inline-block;margin-top:6px;font-size:12.5px;color:var(--muted)}
+.espelho-sha:hover{color:var(--gold-lt)}
 .portatil{border:1px dashed var(--border2);border-radius:16px;background:rgba(17,24,19,.5);padding:20px 22px;margin-top:18px}
 
 /* passos */
@@ -191,7 +198,7 @@ footer{border-top:1px solid var(--border);padding-block:38px 56px;color:var(--fa
       <a class="btn-ghost" href="#instalar">Como instalar</a>
     </div>
     <div class="cta-sub">
-      <span class="cta-meta">versão <strong>beta</strong> · ~3,3 GB (em partes) · Windows 10/11 · precisa do seu Longshot</span>
+      <span class="cta-meta">versão <strong>beta</strong> · ~3,3 GB (3 partes) · Windows 10/11 · precisa do seu Longshot</span>
     </div>
   </div>
 </header>
@@ -206,11 +213,12 @@ footer{border-top:1px solid var(--border);padding-block:38px 56px;color:var(--fa
          <iframe src="https://www.youtube.com/embed/VIDEO_ID?autoplay=1&mute=1&loop=1&playlist=VIDEO_ID&rel=0"
                  allow="autoplay; encrypted-media" allowfullscreen></iframe>
          O iframe não roda dentro da prévia do Artifact (o visualizador bloqueia), por isso aqui aparece o pôster. -->
-    <div class="video-box">
-      <div class="ph">
+    <div class="video-box" id="videoBox">
+      <div id="ytplayer"></div>
+      <div class="ph" id="videoPoster">
         <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
         <span class="cap">Trailer da dublagem
-          <small>vídeo a definir · toca sozinho (mudo) quando o site abrir</small>
+          <small>o vídeo começa automático (mudo) assim que ficar disponível</small>
         </span>
       </div>
     </div>
@@ -238,22 +246,31 @@ footer{border-top:1px solid var(--border);padding-block:38px 56px;color:var(--fa
     <div class="eyebrow">Baixar</div>
     <h2>Pegue a dublagem</h2>
     <div class="dlbox">
-      <p>Pacote <strong>beta</strong> da dublagem — o motor + as ~24 mil vozes. <strong>~3,3 GB</strong>, pelo <strong>GitHub</strong> em 2–3 partes. Pra quem curte testar; a gente lapida com o feedback.</p>
+      <p>Pacote <strong>beta</strong> da dublagem — o instalador + as ~24 mil vozes. <strong>~3,3 GB</strong>, pelo <strong>GitHub</strong> em 3 partes. Pra quem curte testar; a gente lapida com o feedback.</p>
       <div class="cta-row">
-        <a class="btn off" aria-disabled="true">
+        <a class="btn" href="https://github.com/pcdofafa/ocarina-dublado-ptbr/releases/tag/v0.1.0-beta" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 11 5 5 5-5"/><path d="M4 21h16"/></svg>
-          Download em breve
+          Baixar as 3 partes
         </a>
       </div>
       <div class="espelhos">
-        <div class="espelho">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.36 1.09 2.94.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.6 9.6 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.69-4.57 4.94.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2Z"/></svg>
-          <span class="nm">GitHub Releases</span><span class="nt">em 2–3 partes · em breve</span>
-        </div>
+        <a class="espelho" href="https://github.com/pcdofafa/ocarina-dublado-ptbr/releases/download/v0.1.0-beta/Parte1_PROGRAMA.zip">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 11 5 5 5-5"/><path d="M4 21h16"/></svg>
+          <span class="nm">Parte 1 — Programa + instalador</span><span class="nt">117 KB</span>
+        </a>
+        <a class="espelho" href="https://github.com/pcdofafa/ocarina-dublado-ptbr/releases/download/v0.1.0-beta/Parte2_VOZES.zip">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 11 5 5 5-5"/><path d="M4 21h16"/></svg>
+          <span class="nm">Parte 2 — Vozes (1 de 2)</span><span class="nt">1,81 GB</span>
+        </a>
+        <a class="espelho" href="https://github.com/pcdofafa/ocarina-dublado-ptbr/releases/download/v0.1.0-beta/Parte3_VOZES.zip">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 11 5 5 5-5"/><path d="M4 21h16"/></svg>
+          <span class="nm">Parte 3 — Vozes (2 de 2)</span><span class="nt">1,52 GB</span>
+        </a>
+        <a class="espelho-sha" href="https://github.com/pcdofafa/ocarina-dublado-ptbr/releases/download/v0.1.0-beta/SHA256SUMS.txt">Conferir integridade (SHA256SUMS.txt)</a>
       </div>
       <div class="portatil">
         <h3>Por que vem em partes?</h3>
-        <p style="color:var(--muted);font-size:14.6px">A dublagem tem ~3,3 GB e o GitHub aceita no máximo 2 GB por arquivo, então ela vem em 2–3 partes. Baixe todas, guarde na mesma pasta — o iniciador junta tudo na instalação. Os links ficam prontos quando o Fabricio liberar a publicação.</p>
+        <p style="color:var(--muted);font-size:14.6px">A dublagem tem ~3,3 GB e o GitHub aceita no máximo 2 GB por arquivo, então ela vem em <strong>3 partes</strong>. Baixe todas e extraia na <strong>mesma pasta</strong> — elas se completam sozinhas. Os links ficam prontos quando o Fabricio liberar a publicação.</p>
       </div>
     </div>
   </div>
@@ -266,7 +283,14 @@ footer{border-top:1px solid var(--border);padding-block:38px 56px;color:var(--fa
     <h2>Como instalar — passo a passo</h2>
     <div class="warn">
       <h3>Versão beta</h3>
-      <p>Já dá pra jogar dublado! A instalação ainda tem alguns passos manuais. Em breve lançamos uma versão mais fácil. Dá pra seguir mesmo sem entender de computador — são só <strong>6 passos</strong>.</p>
+      <p>Já dá pra jogar dublado! Como é beta, pode ter uma falha aqui ou ali — se achar, conta pra gente. A instalação é simples: <strong>baixar, extrair e dar 2 cliques</strong>. Dá pra seguir mesmo sem entender de computador.</p>
+    </div>
+    <div class="note"><strong>Limitações conhecidas desta beta:</strong>
+      <ul style="margin:8px 0 0;padding-left:18px">
+        <li>O avanço das falas é <strong>manual</strong> (o automático vem numa versão futura).</li>
+        <li>Algumas poucas falas saem em <strong>silêncio</strong>: linhas com números que mudam (rupees/contagens) e as respostas do próprio Link.</li>
+        <li>É beta — pode ter falhas. A comunidade pode ajudar a melhorar.</li>
+      </ul>
     </div>
 
     <h3 style="margin:28px 0 10px">O que você vai precisar</h3>
@@ -277,9 +301,11 @@ footer{border-top:1px solid var(--border);padding-block:38px 56px;color:var(--fa
       <li>Uns <b>15 a 40 minutos</b> de paciência na primeira vez.</li>
     </ul>
 
-    <div class="step"><span class="n">1</span><div><h3>Baixar a dublagem</h3><p>Clique em <strong>Baixar a dublagem</strong> no topo (vai pro GitHub). A dublagem vem em <strong>2–3 partes</strong> (grande demais pra um arquivo só) — baixe todas e guarde na mesma pasta.</p></div></div>
+    <div class="step"><span class="n">1</span><div><h3>Baixar a dublagem</h3><p>Clique em <strong>Baixar a dublagem</strong> no topo (vai pro GitHub). A dublagem vem em <strong>3 partes</strong> (grande demais pra um arquivo só) — baixe todas.</p></div></div>
     <div class="step"><span class="n">2</span><div><h3>Ter o jogo rodando no Longshot</h3><p>A dublagem entra por cima de um jogo que o <strong>Longshot</strong> monta a partir da sua própria cópia. Baixe o launcher só do site oficial <a href="https://longshot.magicbean.dev" target="_blank" rel="noopener">longshot.magicbean.dev</a> e siga as instruções. Escolha o canal <strong>Nightly</strong>, a versão <code>nightly-345-43f40b87</code> (foi nela que a dublagem foi testada) e deixe o idioma em <strong>Português (Brasil)</strong>.</p></div></div>
-    <div class="step"><span class="n">3</span><div><h3>Aplicar a dublagem <span style="font-size:12px;color:var(--gold-lt);border:1px solid rgba(232,181,58,.34);background:rgba(232,181,58,.1);border-radius:999px;padding:2px 9px;vertical-align:middle">passos finais em breve</span></h3><p>Falta esta parte — e vai ser fácil. A ideia: você coloca os arquivos da dublagem na pasta do jogo e ganha um atalho <strong>"Zelda Dublado"</strong> na área de trabalho (com o ícone da Triforce) que abre o jogo <strong>já dublado num clique</strong>. Os passos exatos entram aqui quando a build beta fechar.</p></div></div>
+    <div class="step"><span class="n">3</span><div><h3>Extrair as 3 partes na mesma pasta</h3><p>Crie uma pasta nova (ex.: <strong>Zelda Dublado</strong>) e extraia as <strong>3 partes</strong> ali dentro — clique direito em cada arquivo → <strong>Extrair Tudo</strong>, sempre na mesma pasta. Elas se completam sozinhas.</p></div></div>
+    <div class="step"><span class="n">4</span><div><h3>Rodar o instalador</h3><p>Dê <strong>2 cliques em <code>INSTALAR.bat</code></strong>. Se ele pedir, arraste o seu <code>longshot.exe</code> pra janela. Ele prepara tudo e cria um atalho <strong>"Zelda Dublado"</strong> (ícone da Triforce) na área de trabalho.</p></div></div>
+    <div class="step"><span class="n">5</span><div><h3>Jogar com a dublagem</h3><p>Abra o jogo pelo atalho <strong>"Zelda Dublado"</strong>. Pronto: as falas saem em português. Pra voltar ao normal, rode o <code>DESINSTALAR.bat</code>.</p></div></div>
 
     <div class="tip">
       <h3>Dica esperta: peça ajuda a uma IA</h3>
@@ -288,8 +314,9 @@ footer{border-top:1px solid var(--border);padding-block:38px 56px;color:var(--fa
 
     <h3 style="margin:28px 0 6px">Deu errado?</h3>
     <div class="fixes">
-      <div class="fix"><b>Faltou voz em algumas falas.</b>Provavelmente a versão do jogo é outra. Troque para <code>nightly-345-43f40b87</code> no Longshot e confirme o idioma em Português (Brasil).</div>
+      <div class="fix"><b>Faltou voz em algumas falas.</b>Parte é esperado nesta beta (linhas com números variáveis e as falas do Link saem em silêncio). Se faltar em muita coisa, a versão do jogo deve ser outra: troque para <code>nightly-345-43f40b87</code> no Longshot e confirme o idioma em Português (Brasil).</div>
       <div class="fix"><b>Travou em algum passo.</b>Use a dica da IA acima, ou procure a seção de ajuda nos comentários do vídeo.</div>
+      <div class="fix"><b>Quero voltar tudo como era antes.</b>Rode o <code>DESINSTALAR.bat</code> — ele desfaz a instalação e devolve o jogo ao normal.</div>
     </div>
   </div>
 </section>
@@ -325,9 +352,9 @@ footer{border-top:1px solid var(--border);padding-block:38px 56px;color:var(--fa
     <p class="sec-lead">A dublagem é aberta: quem quiser pode trocar vozes, corrigir pronúncias e refinar personagens.</p>
     <p>No repositório fica a parte leve — o <strong>motor que toca as vozes</strong> (código aberto) e sua configuração, mais o passo a passo. O banco de vozes (os ~24 mil áudios) é grande demais para o Git, então vem pelo download e pelos Releases. <strong>Trocar a voz de um personagem = gerar o áudio dele de novo</strong> com outra voz; a estrutura já está pronta para isso.</p>
     <div class="cta-row">
-      <a class="btn off" aria-disabled="true">
+      <a class="btn" href="https://github.com/pcdofafa/ocarina-dublado-ptbr" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.36 1.09 2.94.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.6 9.6 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.69-4.57 4.94.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2Z"/></svg>
-        Repositório em breve
+        Ver o repositório no GitHub
       </a>
     </div>
     <div class="note"><strong>Licenças:</strong> o código (o motor que toca as vozes) é <strong>GPL</strong> — para conversar com o Longshot, que é GPL; o pacote de vozes é do Fabricio, sob <strong>MIT</strong>. O jogo e seus personagens são da Nintendo; aqui está só a dublagem.</div>
@@ -366,4 +393,11 @@ footer{border-top:1px solid var(--border);padding-block:38px 56px;color:var(--fa
     </div>
   </div>
 </footer>
+
+<script src="https://www.youtube.com/iframe_api"></script>
+<script>
+(function(){var vid='nLz9MDXP7dY',player;var poster=document.getElementById('videoPoster');
+window.onYouTubeIframeAPIReady=function(){player=new YT.Player('ytplayer',{videoId:vid,playerVars:{autoplay:1,mute:1,loop:1,playlist:vid,rel:0,playsinline:1,modestbranding:1},events:{onStateChange:function(e){if(e.data===YT.PlayerState.PLAYING&&poster)poster.classList.add('hide');}}});};
+if(poster)poster.addEventListener('click',function(){if(player&&player.playVideo){if(player.unMute)player.unMute();player.playVideo();}});})();
+</script>
 </body></html>
