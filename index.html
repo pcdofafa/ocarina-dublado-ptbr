@@ -214,14 +214,12 @@ footer{border-top:1px solid var(--border);padding-block:38px 56px;color:var(--fa
                  allow="autoplay; encrypted-media" allowfullscreen></iframe>
          O iframe não roda dentro da prévia do Artifact (o visualizador bloqueia), por isso aqui aparece o pôster. -->
     <div class="video-box" id="videoBox">
-      <div id="ytplayer"></div>
-      <div class="ph" id="videoPoster">
-        <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
-        <span class="cap">O vídeo da dublagem
-          <small>começa automático (mudo) — toque para ouvir com som</small>
-        </span>
-      </div>
+      <iframe id="ytplayer" src="https://www.youtube.com/embed/nLz9MDXP7dY?rel=0&modestbranding=1&playsinline=1"
+              title="A dublagem em ação — Ocarina of Time em português"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
     </div>
+    <p style="text-align:center;margin-top:12px;font-size:13.5px;color:var(--muted)">O vídeo não carregou aqui? <a href="https://www.youtube.com/watch?v=nLz9MDXP7dY" target="_blank" rel="noopener">Assista direto no YouTube ↗</a></p>
   </div>
 </section>
 
@@ -394,10 +392,4 @@ footer{border-top:1px solid var(--border);padding-block:38px 56px;color:var(--fa
   </div>
 </footer>
 
-<script src="https://www.youtube.com/iframe_api"></script>
-<script>
-(function(){var vid='nLz9MDXP7dY',player;var poster=document.getElementById('videoPoster');
-window.onYouTubeIframeAPIReady=function(){player=new YT.Player('ytplayer',{videoId:vid,playerVars:{autoplay:1,mute:1,loop:1,playlist:vid,rel:0,playsinline:1,modestbranding:1},events:{onStateChange:function(e){if(e.data===YT.PlayerState.PLAYING&&poster)poster.classList.add('hide');}}});};
-if(poster)poster.addEventListener('click',function(){if(player&&player.playVideo){if(player.unMute)player.unMute();player.playVideo();}});})();
-</script>
 </body></html>
