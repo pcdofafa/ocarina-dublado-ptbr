@@ -1,0 +1,10 @@
+cache/
+dub/
+*.wav
+*.zip
+*.7z
+*.7z.*
+*.ico
+preview/
+standalone.html
+# vozes e assets grandes NUNCA vão no git — só como assets de Release
